@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org",
+  "title": "ScreamerMeshPacketPayload",
+  "description": "Standardized network data model for algorithm-free LoRa telemetry alerts.",
+  "type": "object",
+  "properties": {
+    "network_header": {
+      "type": "object",
+      "properties": {
+        "protocol_version": { "type": "string", "default": "1.0.0" },
+        "device_id": { "type": "string", "examples": ["MS_NODE_049A"] }
+      },
+      "required": ["protocol_version", "device_id"]
+    },
+    "telemetry_metrics": {
+      "type": "object",
+      "properties": {
+        "alert_sequence": { "type": "integer", "minimum": 0 },
+        "execution_mode": { "type": "string", "enum": ["SCREAMING", "SILENT", "TEST_PING"] },
+        "hardware_battery_voltage": { "type": "number", "minimum": 0.0, "maximum": 5.0 }
+      },
+      "required": ["alert_sequence", "execution_mode", "hardware_battery_voltage"]
+    }
+  },
+  "required": ["network_header", "telemetry_metrics"]
+}
