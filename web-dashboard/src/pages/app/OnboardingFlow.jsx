@@ -92,7 +92,8 @@ function LocationSetup({ onLocated }) {
   const [error, setError] = useState('');
 
   async function saveAndContinue(loc) {
-    try { await window.storage.set('user-location', JSON.stringify(loc), false); } catch (e) { /* continue anyway, non-fatal */ }
+    try {
+  localStorage.setItem('user-location', JSON.stringify(loc)); } catch (e) { /* ignore storage quota errors */ }
     onLocated(loc);
   }
 
@@ -266,8 +267,9 @@ export default function App() {
     (async () => {
       let loc = null;
       try {
-        const res = await window.storage.get('user-location', false);
-        if (res) loc = JSON.parse(res.value);
+        const storedData = localStorage.getItem('user-location');
+        if (storedData) loc = JSON.parse(storedData);
+        
       } catch (e) { /* no stored location yet */ }
       await minDelay;
       if (cancelled) return;
